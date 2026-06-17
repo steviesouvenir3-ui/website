@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stevie Souvenir — Tuteur | Tutor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --night: #0F1F3D;
+      --ivory: #F7F3EC;
+      --gold: #D4A84B;
+      --mint: #2D8B72;
+      --soft: #E8E2D9;
+      --text-dark: #1a1a2e;
+      --text-muted: #5a6072;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--ivory);
+      color: var(--text-dark);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.1rem 2.5rem;
+      background: rgba(15, 31, 61, 0.96);
+      backdrop-filter: blur(8px);
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem; font-weight: 700;
+      color: var(--ivory); letter-spacing: 0.02em;
+    }
+    .nav-logo span { color: var(--gold); }
+    .nav-links { display: flex; gap: 2rem; align-items: center; }
+    .nav-links a {
+      color: rgba(247,243,236,0.75); font-size: 0.85rem;
+      text-decoration: none; letter-spacing: 0.06em; text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .lang-btn {
+      background: var(--gold); border: none; cursor: pointer;
+      color: var(--night); font-family: 'Inter', sans-serif;
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em;
+      padding: 0.45rem 1rem; border-radius: 2px; transition: opacity 0.2s;
+    }
+    .lang-btn:hover { opacity: 0.85; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      background: var(--night);
+      display: grid; grid-template-columns: 1fr 1fr;
+      position: relative; overflow: hidden;
+    }
+    .hero::after {
+      content: '';
+      position: absolute; top: 0; bottom: 0;
+      left: 50%; width: 120px;
+      background: var(--gold);
+      transform: skewX(-4deg) translateX(-50%);
+      opacity: 0.12;
+      pointer-events: none;
+    }
+    .hero-text {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 8rem 4rem 4rem 5rem;
+      z-index: 2;
+    }
+    .hero-eyebrow {
+      font-size: 0.75rem; font-weight: 600; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 1.5rem;
+    }
+    .hero-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 5vw, 5.5rem);
+      font-weight: 900; line-height: 1.0;
+      color: var(--ivory);
+    }
+    .hero-name em {
+      display: block; font-style: italic;
+      color: var(--gold); font-size: 0.65em;
+      margin-top: 0.15em;
+    }
+    .hero-tagline {
+      margin-top: 2rem;
+      font-size: 1.05rem; line-height: 1.7;
+      color: rgba(247,243,236,0.7);
+      max-width: 38ch;
+    }
+    .hero-cta {
+      margin-top: 3rem; display: flex; gap: 1rem; flex-wrap: wrap;
+    }
+    .btn-primary {
+      display: inline-block; padding: 0.9rem 2rem;
+      background: var(--gold); color: var(--night);
+      font-weight: 600; font-size: 0.9rem; letter-spacing: 0.04em;
+      text-decoration: none; border-radius: 2px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(212,168,75,0.35); }
+    .btn-outline {
+      display: inline-block; padding: 0.9rem 2rem;
+      border: 1.5px solid rgba(247,243,236,0.35); color: var(--ivory);
+      font-size: 0.9rem; letter-spacing: 0.04em;
+      text-decoration: none; border-radius: 2px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+    .hero-photo-side {
+      position: relative; display: flex; align-items: flex-end;
+      justify-content: center; overflow: hidden;
+      padding-top: 5rem;
+    }
+    .hero-photo-placeholder {
+      width: min(340px, 80%);
+      aspect-ratio: 3/4;
+      background: linear-gradient(160deg, #1e3a5f 0%, #0f1f3d 60%);
+      border-radius: 4px 4px 0 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    .hero-photo-placeholder::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(160deg, rgba(212,168,75,0.08) 0%, transparent 70%);
+    }
+    .photo-upload-hint {
+      color: rgba(247,243,236,0.35);
+      font-size: 0.85rem; text-align: center;
+      padding: 1rem; line-height: 1.5;
+    }
+    .photo-icon {
+      width: 64px; height: 64px;
+      border: 2px dashed rgba(212,168,75,0.4);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1rem; color: rgba(212,168,75,0.5);
+      font-size: 1.8rem;
+    }
+    /* when user provides a real photo via data-url or src, show it */
+    .hero-photo-placeholder img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .corner-accent {
+      position: absolute; top: 6rem; right: 3rem;
+      width: 2px; height: 80px; background: var(--gold); opacity: 0.5;
+    }
+    .corner-accent::after {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 40px; height: 2px; background: var(--gold); opacity: 1;
+    }
+
+    /* ── SECTIONS ── */
+    section { padding: 6rem 5vw; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+
+    .section-label {
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--mint);
+      margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.9rem, 3.5vw, 3rem);
+      font-weight: 700; line-height: 1.2;
+      color: var(--night);
+    }
+
+    /* ── À PROPOS ── */
+    #about { background: var(--ivory); }
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1.6fr;
+      gap: 5rem; align-items: start; margin-top: 3.5rem;
+    }
+    .about-sidebar {}
+    .credential-card {
+      background: var(--night); border-radius: 4px;
+      padding: 2rem; margin-bottom: 1.5rem;
+    }
+    .credential-card h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem; color: var(--gold); margin-bottom: 0.6rem;
+    }
+    .credential-card p { font-size: 0.88rem; color: rgba(247,243,236,0.7); line-height: 1.6; }
+    .about-text p {
+      font-size: 1.05rem; line-height: 1.85;
+      color: #2a3040; margin-bottom: 1.4rem;
+    }
+    .about-text p:last-child { margin-bottom: 0; }
+    .highlight-bar {
+      border-left: 3px solid var(--gold);
+      padding-left: 1.5rem; margin: 2rem 0;
+      font-family: 'Playfair Display', serif;
+      font-style: italic; font-size: 1.15rem;
+      color: var(--night); line-height: 1.6;
+    }
+
+    /* ── SERVICES / MATIÈRES ── */
+    #services { background: var(--night); }
+    #services .section-title { color: var(--ivory); }
+    #services .section-label { color: var(--gold); }
+    .services-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem; margin-top: 3rem;
+    }
+    .service-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(212,168,75,0.2);
+      border-radius: 4px; padding: 2rem;
+      transition: border-color 0.3s, transform 0.2s;
+    }
+    .service-card:hover { border-color: var(--gold); transform: translateY(-4px); }
+    .service-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .service-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem; color: var(--ivory);
+      margin-bottom: 0.6rem;
+    }
+    .service-card p { font-size: 0.85rem; color: rgba(247,243,236,0.6); line-height: 1.6; }
+
+    /* ── TARIFS ── */
+    #tarifs { background: var(--soft); }
+    .tarif-box {
+      margin-top: 3rem;
+      display: flex; gap: 2rem; flex-wrap: wrap;
+    }
+    .tarif-card {
+      flex: 1; min-width: 260px;
+      background: white; border-radius: 4px;
+      padding: 3rem 2.5rem; text-align: center;
+      box-shadow: 0 4px 24px rgba(15,31,61,0.08);
+      position: relative; overflow: hidden;
+    }
+    .tarif-card.featured::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: var(--gold);
+    }
+    .tarif-badge {
+      display: inline-block; padding: 0.3rem 0.9rem;
+      background: var(--gold); color: var(--night);
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; border-radius: 2px;
+      margin-bottom: 1.5rem;
+    }
+    .tarif-price {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.5rem; font-weight: 900;
+      color: var(--night); line-height: 1;
+    }
+    .tarif-price sup { font-size: 1.5rem; vertical-align: super; }
+    .tarif-price sub { font-size: 1rem; color: var(--text-muted); }
+    .tarif-desc {
+      margin-top: 1.5rem; font-size: 0.9rem;
+      color: var(--text-muted); line-height: 1.7;
+    }
+    .tarif-list {
+      list-style: none; text-align: left;
+      margin: 2rem 0; padding: 0;
+    }
+    .tarif-list li {
+      font-size: 0.9rem; color: #2a3040;
+      padding: 0.5rem 0; border-bottom: 1px solid var(--soft);
+      display: flex; gap: 0.8rem; align-items: flex-start;
+    }
+    .tarif-list li::before { content: '✓'; color: var(--mint); font-weight: 700; flex-shrink: 0; }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--night); }
+    #contact .section-title { color: var(--ivory); }
+    #contact .section-label { color: var(--gold); }
+    .contact-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; margin-top: 3rem; align-items: start;
+    }
+    .contact-blurb { font-size: 1rem; color: rgba(247,243,236,0.7); line-height: 1.8; }
+    .contact-links { display: flex; flex-direction: column; gap: 1.2rem; margin-top: 2rem; }
+    .contact-link {
+      display: flex; align-items: center; gap: 1rem;
+      text-decoration: none; padding: 1.2rem 1.5rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(212,168,75,0.2);
+      border-radius: 4px; transition: border-color 0.2s;
+    }
+    .contact-link:hover { border-color: var(--gold); }
+    .contact-link-icon {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: rgba(212,168,75,0.12);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; flex-shrink: 0;
+    }
+    .contact-link-text strong {
+      display: block; font-size: 0.8rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 0.2rem;
+    }
+    .contact-link-text span { font-size: 0.9rem; color: rgba(247,243,236,0.8); }
+    .contact-form-side p {
+      font-size: 1rem; color: rgba(247,243,236,0.6); line-height: 1.7;
+      margin-bottom: 2rem;
+    }
+    .contact-form-side .btn-primary {
+      display: inline-block;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #070e1d; padding: 2.5rem 5vw;
+      text-align: center;
+    }
+    footer p { font-size: 0.82rem; color: rgba(247,243,236,0.3); line-height: 1.7; }
+    footer a { color: var(--gold); text-decoration: none; }
+
+    /* ── LANG TOGGLE ── */
+    [data-lang="en"] { display: none; }
+    body.lang-en [data-lang="fr"] { display: none; }
+    body.lang-en [data-lang="en"] { display: block; }
+    /* inline spans */
+    span[data-lang="en"] { display: none; }
+    body.lang-en span[data-lang="fr"] { display: none; }
+    body.lang-en span[data-lang="en"] { display: inline; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links a { display: none; }
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-text { padding: 7rem 2rem 3rem; }
+      .hero-photo-side { padding: 2rem; }
+      .hero-photo-placeholder { width: min(280px, 90%); }
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+      section { padding: 4rem 1.5rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition: none !important; animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">Stevie <span>Souvenir</span></div>
+    <div class="nav-links">
+      <a href="#about" data-lang="fr">À propos</a>
+      <a href="#about" data-lang="en">About</a>
+      <a href="#services" data-lang="fr">Services</a>
+      <a href="#services" data-lang="en">Services</a>
+      <a href="#tarifs" data-lang="fr">Tarifs</a>
+      <a href="#tarifs" data-lang="en">Rates</a>
+      <a href="#contact" data-lang="fr">Contact</a>
+      <a href="#contact" data-lang="en">Contact</a>
+      <button class="lang-btn" onclick="toggleLang()">EN / FR</button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" style="padding:0;">
+    <div class="hero-text">
+      <p class="hero-eyebrow">
+        <span data-lang="fr">Tuteur · Mentor · Éducateur</span>
+        <span data-lang="en">Tutor · Mentor · Educator</span>
+      </p>
+      <h1 class="hero-name">
+        Stevie
+        <em>Souvenir</em>
+      </h1>
+      <p class="hero-tagline" data-lang="fr">
+        Allier la rigueur académique, l'empathie et une touche d'humour pour propulser les jeunes vers la réussite.
+      </p>
+      <p class="hero-tagline" data-lang="en">
+        Combining academic rigor, empathy, and a touch of humor to propel young people toward success.
+      </p>
+      <div class="hero-cta">
+        <a href="#contact" class="btn-primary">
+          <span data-lang="fr">Me contacter</span>
+          <span data-lang="en">Get in touch</span>
+        </a>
+        <a href="https://www.linkedin.com/in/stevie-souvenir-b8148517b/" target="_blank" rel="noopener" class="btn-outline">LinkedIn</a>
+      </div>
+    </div>
+    <div class="hero-photo-side">
+      <div class="corner-accent"></div>
+      <div class="hero-photo-placeholder">
+        <div class="photo-icon">📷</div>
+        <p class="photo-upload-hint">
+          <span data-lang="fr">Ajoutez votre photo ici<br/><small>Envoyez-la moi par courriel pour l'intégrer</small></span>
+          <span data-lang="en">Add your photo here<br/><small>Send it by email to integrate it</small></span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- À PROPOS -->
+  <section id="about">
+    <div class="section-inner">
+      <p class="section-label">
+        <span data-lang="fr">Mon parcours</span>
+        <span data-lang="en">My journey</span>
+      </p>
+      <h2 class="section-title">
+        <span data-lang="fr">À propos de moi</span>
+        <span data-lang="en">About Me</span>
+      </h2>
+
+      <div class="about-grid">
+        <div class="about-sidebar">
+          <div class="credential-card">
+            <h4>
+              <span data-lang="fr">Formation académique</span>
+              <span data-lang="en">Academic Background</span>
+            </h4>
+            <p data-lang="fr">Baccalauréat en sociologie — UQAM<br/>Certificat en travail social — Université Laval</p>
+            <p data-lang="en">Bachelor's in Sociology — UQAM<br/>Certificate in Social Work — Université Laval</p>
+          </div>
+          <div class="credential-card">
+            <h4>
+              <span data-lang="fr">Expérience internationale</span>
+              <span data-lang="en">International Experience</span>
+            </h4>
+            <p data-lang="fr">Enseignement à Sheffield Hallam University (Royaume-Uni) via Azimut Échange & British Council<br/>Stage à Lima, Pérou</p>
+            <p data-lang="en">Teaching at Sheffield Hallam University (UK) via Azimut Échange & British Council<br/>Internship in Lima, Peru</p>
+          </div>
+          <div class="credential-card">
+            <h4>
+              <span data-lang="fr">Intervention communautaire</span>
+              <span data-lang="en">Community Work</span>
+            </h4>
+            <p data-lang="fr">Intervention de crise auprès des familles — Valoris<br/>Accompagnement chez Succès Scolaire</p>
+            <p data-lang="en">Crisis intervention for families & teens — Valoris<br/>Academic support at Succès Scolaire</p>
+          </div>
+        </div>
+
+        <div class="about-text">
+          <div data-lang="fr">
+            <div class="highlight-bar">
+              « Il suffit parfois d'un déclic pour persévérer — je suis là pour allumer cette étincelle. »
+            </div>
+            <p>Titulaire d'un baccalauréat en sociologie de l'UQAM et d'un certificat en travail social de l'Université Laval, j'intègre une approche profondément humaniste à ma pratique, me permettant de comprendre avec sensibilité les défis uniques que chaque jeune traverse.</p>
+            <p>Mon parcours est guidé par l'engagement communautaire, l'intervention de crise auprès des familles (Valoris) et l'éducation internationale. Récemment, j'ai passé une année à enseigner à l'Université Sheffield Hallam au Royaume-Uni, un projet réalisé grâce à l'organisme québécois Azimut Échange et soutenu par le British Council.</p>
+            <p>Aujourd'hui, j'accompagne les adolescents chez Succès Scolaire en histoire et en français. Grâce à mes expériences à l'étranger, notamment lors d'un stage à Lima, je propose également un soutien pour l'apprentissage de l'espagnol et de l'anglais (niveau de base).</p>
+            <p>Ayant moi-même surmonté des défis scolaires durant ma jeunesse, je sais qu'il suffit parfois d'un déclic pour persévérer. C'est cette force combinée — éducative, sociale et sportive — que je mets au service de votre enfant pour perfectionner sa méthodologie, maîtriser la prise de notes et solidifier sa confiance en lui.</p>
+          </div>
+          <div data-lang="en">
+            <div class="highlight-bar">
+              "Sometimes it only takes the right spark to persevere — I'm here to light that flame."
+            </div>
+            <p>Holding a bachelor's degree in Sociology from UQAM and a certificate in Social Work from Université Laval, I bring a deeply humanistic touch to my practice, allowing me to understand and support the unique personal and academic challenges that each student may face.</p>
+            <p>My journey is rooted in community engagement, crisis intervention for families and teens (Valoris), and international education. Recently, I spent a year teaching at Sheffield Hallam University in the UK — an opportunity made possible by the Quebec organization Azimut Échange and supported by the British Council.</p>
+            <p>Currently, I support teenagers with Succès Scolaire, specializing in history and French. Drawing from my international background, including an internship in Lima, I also offer academic support for learning Spanish and basic English.</p>
+            <p>Having personally overcome academic challenges in my youth, I know that sometimes it only takes the right spark to persevere. Today, I channel this unique blend of educational, social, and athletic skills to help your child master note-taking, refine their study methodology, and rebuild their confidence.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="section-inner">
+      <p class="section-label">
+        <span data-lang="fr">Ce que j'offre</span>
+        <span data-lang="en">What I offer</span>
+      </p>
+      <h2 class="section-title">
+        <span data-lang="fr">Services de tutorat</span>
+        <span data-lang="en">Tutoring Services</span>
+      </h2>
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon">📚</div>
+          <h3>
+            <span data-lang="fr">Histoire</span>
+            <span data-lang="en">History</span>
+          </h3>
+          <p data-lang="fr">Révision du programme, méthodologie d'analyse et préparation aux examens.</p>
+          <p data-lang="en">Program review, analytical methodology and exam preparation.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">✍️</div>
+          <h3>
+            <span data-lang="fr">Français</span>
+            <span data-lang="en">French</span>
+          </h3>
+          <p data-lang="fr">Rédaction, lecture, compréhension et maîtrise de la langue écrite.</p>
+          <p data-lang="en">Writing, reading, comprehension and command of the written language.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">🌎</div>
+          <h3>
+            <span data-lang="fr">Espagnol</span>
+            <span data-lang="en">Spanish</span>
+          </h3>
+          <p data-lang="fr">Initiation et soutien en espagnol, enrichi par mon expérience à Lima, Pérou.</p>
+          <p data-lang="en">Introduction and support in Spanish, enriched by my experience in Lima, Peru.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">🇬🇧</div>
+          <h3>
+            <span data-lang="fr">Anglais (base)</span>
+            <span data-lang="en">English (Basic)</span>
+          </h3>
+          <p data-lang="fr">Bases de l'anglais pour les francophones, avec une approche pédagogique internationale.</p>
+          <p data-lang="en">English basics for French speakers, with an international pedagogical approach.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">🎯</div>
+          <h3>
+            <span data-lang="fr">Méthodes d'étude</span>
+            <span data-lang="en">Study Skills</span>
+          </h3>
+          <p data-lang="fr">Prise de notes, organisation, gestion du temps et confiance en soi.</p>
+          <p data-lang="en">Note-taking, organization, time management and self-confidence.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">💬</div>
+          <h3>
+            <span data-lang="fr">Mentorat</span>
+            <span data-lang="en">Mentorship</span>
+          </h3>
+          <p data-lang="fr">Soutien motivationnel et accompagnement personnalisé sur le long terme.</p>
+          <p data-lang="en">Motivational support and long-term personalized accompaniment.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TARIFS -->
+  <section id="tarifs">
+    <div class="section-inner">
+      <p class="section-label">
+        <span data-lang="fr">Investissement</span>
+        <span data-lang="en">Investment</span>
+      </p>
+      <h2 class="section-title">
+        <span data-lang="fr">Tarifs</span>
+        <span data-lang="en">Rates</span>
+      </h2>
+      <div class="tarif-box">
+        <div class="tarif-card featured">
+          <span class="tarif-badge">
+            <span data-lang="fr">Tutorat individuel</span>
+            <span data-lang="en">Individual tutoring</span>
+          </span>
+          <div class="tarif-price"><sup>$</sup>30<sub data-lang="fr">/heure</sub><sub data-lang="en">/hour</sub></div>
+          <p class="tarif-desc" data-lang="fr">Séance en présentiel ou en ligne, adaptée au rythme et aux besoins de votre enfant.</p>
+          <p class="tarif-desc" data-lang="en">In-person or online session, tailored to your child's pace and needs.</p>
+          <ul class="tarif-list" data-lang="fr">
+            <li>Suivi personnalisé et rigoureux</li>
+            <li>Plan d'apprentissage sur mesure</li>
+            <li>Histoire, français, espagnol, anglais</li>
+            <li>Méthodes d'étude & confiance en soi</li>
+            <li>Communication avec les parents</li>
+          </ul>
+          <ul class="tarif-list" data-lang="en">
+            <li>Personalized and structured follow-up</li>
+            <li>Customized learning plan</li>
+            <li>History, French, Spanish, English</li>
+            <li>Study methods & confidence building</li>
+            <li>Parent communication</li>
+          </ul>
+          <a href="#contact" class="btn-primary" style="width:100%; text-align:center; margin-top:1rem;">
+            <span data-lang="fr">Réserver une séance</span>
+            <span data-lang="en">Book a session</span>
+          </a>
+        </div>
+        <div class="tarif-card">
+          <span class="tarif-badge" style="background: var(--mint); color: white;">
+            <span data-lang="fr">Première rencontre</span>
+            <span data-lang="en">First meeting</span>
+          </span>
+          <div class="tarif-price" style="color: var(--mint);">
+            <span data-lang="fr">Gratuit</span>
+            <span data-lang="en">Free</span>
+          </div>
+          <p class="tarif-desc" data-lang="fr">Une première rencontre gratuite pour mieux cerner les besoins de votre enfant et établir un plan d'action ensemble.</p>
+          <p class="tarif-desc" data-lang="en">A free initial meeting to better understand your child's needs and establish an action plan together.</p>
+          <ul class="tarif-list" data-lang="fr">
+            <li>Évaluation du niveau actuel</li>
+            <li>Discussion des objectifs</li>
+            <li>Plan d'action personnalisé</li>
+            <li>Sans engagement</li>
+          </ul>
+          <ul class="tarif-list" data-lang="en">
+            <li>Assessment of current level</li>
+            <li>Discussion of objectives</li>
+            <li>Personalized action plan</li>
+            <li>No commitment required</li>
+          </ul>
+          <a href="#contact" class="btn-primary" style="width:100%; text-align:center; margin-top:1rem; background: var(--mint);">
+            <span data-lang="fr">Prendre rendez-vous</span>
+            <span data-lang="en">Schedule a meeting</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-inner">
+      <p class="section-label">
+        <span data-lang="fr">Parlons-nous</span>
+        <span data-lang="en">Let's talk</span>
+      </p>
+      <h2 class="section-title">
+        <span data-lang="fr">Me contacter</span>
+        <span data-lang="en">Contact Me</span>
+      </h2>
+      <div class="contact-grid">
+        <div>
+          <p class="contact-blurb" data-lang="fr">
+            Vous avez un enfant qui a besoin d'un coup de pouce ? Écrivez-moi, je serai heureux de discuter de ses besoins et de voir comment je peux l'accompagner vers la réussite.
+          </p>
+          <p class="contact-blurb" data-lang="en">
+            Do you have a child who could use some support? Reach out — I'd be happy to discuss their needs and explore how I can guide them toward success.
+          </p>
+          <div class="contact-links">
+            <a href="mailto:steviesouvenir3@gmail.com" class="contact-link">
+              <div class="contact-link-icon">✉️</div>
+              <div class="contact-link-text">
+                <strong>Email</strong>
+                <span>steviesouvenir3@gmail.com</span>
+              </div>
+            </a>
+            <a href="https://www.linkedin.com/in/stevie-souvenir-b8148517b/" target="_blank" rel="noopener" class="contact-link">
+              <div class="contact-link-icon">💼</div>
+              <div class="contact-link-text">
+                <strong>LinkedIn</strong>
+                <span>Stevie Souvenir</span>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="contact-form-side">
+          <p data-lang="fr">
+            La façon la plus rapide de me joindre est par courriel. Je réponds habituellement dans les 24 heures. Vous pouvez aussi consulter mon profil LinkedIn pour en savoir plus sur mon parcours professionnel.
+          </p>
+          <p data-lang="en">
+            The fastest way to reach me is by email. I usually respond within 24 hours. You can also visit my LinkedIn profile to learn more about my professional background.
+          </p>
+          <a href="mailto:steviesouvenir3@gmail.com" class="btn-primary" style="font-size:1rem;">
+            <span data-lang="fr">📩 Envoyer un courriel</span>
+            <span data-lang="en">📩 Send an email</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>
+      © 2025 Stevie Souvenir · 
+      <a href="mailto:steviesouvenir3@gmail.com">steviesouvenir3@gmail.com</a> · 
+      <a href="https://www.linkedin.com/in/stevie-souvenir-b8148517b/" target="_blank" rel="noopener">LinkedIn</a>
+    </p>
+    <p style="margin-top:0.5rem;">
+      <span data-lang="fr">Tuteur | Mentor | Éducateur — Montréal, Québec</span>
+      <span data-lang="en">Tutor | Mentor | Educator — Montréal, Québec</span>
+    </p>
+  </footer>
+
+  <script>
+    function toggleLang() {
+      document.body.classList.toggle('lang-en');
+      const isEn = document.body.classList.contains('lang-en');
+      document.documentElement.lang = isEn ? 'en' : 'fr';
+    }
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
